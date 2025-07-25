@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade de Ciências - Revisão para Recuperação</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f0f0;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: linear-gradient(to right, #ffffff, #e6f0ff);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(to right, #1e88e5, #0d47a1);
+        }
+        
+        .header {
+            text-align: center;
+            padding: 15px 0 25px;
+            border-bottom: 2px solid #1e88e5;
+            margin-bottom: 25px;
+        }
+        
+        .school-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #0d47a1;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        
+        .activity-title {
+            font-size: 26px;
+            font-weight: bold;
+            color: #1a237e;
+            margin: 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .student-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .info-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-label {
+            font-weight: bold;
+            color: #1a237e;
+            min-width: 70px;
+        }
+        
+        select, input {
+            padding: 8px 12px;
+            border: 1px solid #90caf9;
+            border-radius: 8px;
+            background-color: #e3f2fd;
+            font-size: 15px;
+            min-width: 200px;
+        }
+        
+        .questions-container {
+            counter-reset: question;
+        }
+        
+        .question {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            position: relative;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-left: 4px solid #1e88e5;
+        }
+        
+        .question:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .question::before {
+            counter-increment: question;
+            content: counter(question) ".";
+            position: absolute;
+            left: -30px;
+            top: 20px;
+            background-color: #1e88e5;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .question-text {
+            font-weight: 500;
+            margin-bottom: 15px;
+            font-size: 17px;
+            line-height: 1.5;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        
+        .option {
+            padding: 12px 15px;
+            background-color: #e3f2fd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            border: 1px solid #bbdefb;
+        }
+        
+        .option:hover {
+            background-color: #bbdefb;
+        }
+        
+        .option.selected {
+            background-color: #90caf9;
+            font-weight: bold;
+        }
+        
+        .option-letter {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            background-color: #0d47a1;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 25px;
+            margin-right: 12px;
+            font-weight: bold;
+        }
+        
+        .justification {
+            margin-top: 15px;
+            padding: 12px;
+            background-color: #e8f5e9;
+            border-radius: 8px;
+            border-left: 3px solid #4caf50;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .show-justification {
+            margin-top: 10px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        
+        .show-justification:hover {
+            background-color: #388e3c;
+        }
+        
+        .submit-container {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px dashed #90caf9;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(to right, #1e88e5, #0d47a1);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(30, 136, 229, 0.4);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(30, 136, 229, 0.6);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .student-info {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            .question {
+                padding: 15px;
+            }
+            
+            .question::before {
+                left: -25px;
+                width: 25px;
+                height: 25px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="school-name">E.E. "PROFª WANDA MASCAGNI DE SÁ"</div>
+            <div class="student-info">
+                <div class="info-group">
+                    <span class="info-label">NOME:</span>
+                    <select id="student-name">
+                        <option value="">Selecione seu nome</option>
+                        <!-- 8ºA -->
+                        <optgroup label="8ºA">
+                            <option value="1">AMANDA PASSOS DE ALMEIDA</option>
+                            <option value="2">ANA BEATRIZ RODRIGUES OLIVEIRA</option>
+                            <option value="3">ANA CLARA SOUSA DA COSTA</option>
+                            <option value="4">ANA VICTORIA RAGACINI DE OLIVEIRA</option>
+                            <option value="5">ARTHUR DAVI DE SOUZA FERNANDES</option>
+                            <option value="6">EDUARDA ALVES DE SOUZA</option>
+                            <option value="7">EMANUEL ALVES OLIVEIRA</option>
+                            <option value="8">ESTHER CRISTINE SILVA RIBEIRO</option>
+                            <option value="9">EVELLYN YASMIN TAVARES SILVA</option>
+                            <option value="10">FELIPE DE SOUZA RODRIGUES</option>
+                            <option value="11">FERNANDA POLACHINI MAYER GOMES MARQUES</option>
+                            <option value="12">GEOVANNA VITORIA ROCHA ABDALA</option>
+                            <option value="15">GUSTAVO AUGUSTO TOMBOLO REIS</option>
+                            <option value="16">HENRIQUE ROCHA CARVALHAL</option>
+                            <option value="17">IGOR MARTINS PEREIRA</option>
+                            <option value="18">IZABELLY VITORIA DE CARVALHO RODRIGUES SETH</option>
+                            <option value="21">KAROLAYNE DOS SANTOS BISSORNIA</option>
+                            <option value="22">KAUANNY APARECIDA MALAQUIAS LIMA</option>
+                            <option value="23">KÉTHILY NAYARA DA SILVA</option>
+                            <option value="25">LAVINIA PEREIRA DE SOUZA</option>
+                            <option value="26">LIVIA PEREIRA DE SOUZA</option>
+                            <option value="27">LOHRAN ROMUALDO MENDES DA SILVA</option>
+                            <option value="28">LUIS MIGUEL GONCALVES DA SILVA</option>
+                            <option value="29">MARCELA ROBERTO DE OLIVEIRA</option>
+                            <option value="31">MATHEUS TURCHETTO</option>
+                            <option value="32">OMRAN RASEKH</option>
+                            <option value="33">PRISCILLA VITORIA MENDES DE OLIVEIRA</option>
+                            <option value="36">SARAH VITORIA ALVES OLIVEIRA</option>
+                            <option value="37">YURI GABRIEL DE MORAES PONGOLINO</option>
+                            <option value="38">ZAYN AL ABIDIN RASULI</option>
+                            <option value="39">ARTHUR COHEN BARRETO</option>
+                            <option value="40">ISABELLA DOS SANTOS SALDANHA</option>
+                            <option value="41">MIGUEL MARTINS DE ASSIS</option>
+                            <option value="42">ALICE CARVALHO</option>
+                            <option value="43">AMANDA PASSOS DE ALMEIDA</option>
+                            <option value="44">ANA JULIA MENEZES DA SILVA</option>
+                        </optgroup>
+                        <!-- 8ºB -->
+                        <optgroup label="8ºB">
+                            <option value="101">ALICE CARVALHO</option>
+                            <option value="102">ANA CLARA GONCALVES TORRES LOYOLA</option>
+                            <option value="103">ANNA BEATRIZ SANTIAGO DA SILVA</option>
+                            <option value="104">ARTHUR HORACIO MACEDO</option>
+                            <option value="105">DAVID HENRIQUE SILVA DOS SANTOS</option>
+                            <option value="106">ELIAS SILVA DE LIMA</option>
+                            <option value="107">EVERTON HENRIQUE CARMO RODRIGUES</option>
+                            <option value="108">FERNANDA MELLYSSA ALVES DE SOUZA</option>
+                            <option value="109">GABRIELA VITORIA SEVERA LINS</option>
+                            <option value="110">JENYFFER EMIDIO CALABRIA</option>
+                            <option value="111">JOÃO VICTOR DA ROCHA TRINDADE</option>
+                            <option value="112">JULIO CESAR ALVES DOS SANTOS</option>
+                            <option value="113">LUAN SOUZA MOREIRA LOPES</option>
+                            <option value="114">LUAN VENITES BALBINO</option>
+                            <option value="115">LUCAS LUNA NASCIMENTO OLIVEIRA</option>
+                            <option value="116">LUCAS SANTOS SILVA</option>
+                            <option value="117">MARIA EDUARDA FELIX DA SILVA</option>
+                            <option value="118">MONIQUE RIJO COSTA</option>
+                            <option value="119">MUNIQUE CRISTINA LUCAS</option>
+                            <option value="120">NICOLAS PENTEADO</option>
+                            <option value="121">OCTAVIO GONÇALVES OLIVEIRA PEREIRA</option>
+                            <option value="122">OMRAN RASEKH</option>
+                            <option value="123">PAULO CELSO DA COSTA JUNIOR</option>
+                            <option value="124">PEDRO HENRIQUE CARLOS LIMA</option>
+                            <option value="125">PEDRO HENRIQUE MORAIS AMORIM</option>
+                            <option value="126">PEDRO HENRIQUE NASCIMENTO DA CONCEICAO</option>
+                            <option value="127">PIETRO RODRIGUES MIRANDA</option>
+                            <option value="128">RAPHAELLY APARECIDA MARINHO DE OLIVEIRA</option>
+                            <option value="129">RENAN LEANDRO RODRIGUES VICENTE</option>
+                            <option value="130">RENAN OLIVEIRA CAETANO PEREIRA</option>
+                            <option value="131">RIAN OTAVIANO FLAUSINO</option>
+                            <option value="132">THAYNA SEABRA DE OLIVEIRA DO NASCIMENTO</option>
+                            <option value="133">WENDELL RAFAEL DE JESUS LESSA</option>
+                            <option value="134">WILHAN KENJI ANTONIO</option>
+                            <option value="135">ZAYN AL ABIDIN RASULI</option>
+                            <option value="136">VITOR HOLANDA DA SILVA</option>
+                            <option value="137">D'ALESSANDRO GIANLUCA FERNANDEZ ARCAYA</option>
+                            <option value="138">ZAINAB MOHAMMADI</option>
+                            <option value="139">JOANA BEATRIZ VIEIRA DE SOUZA</option>
+                            <option value="140">JENNYFER VITORIA BASILIO GOMES</option>
+                            <option value="141">THAYNA SEABRA DE OLIVEIRA DO NASCIMENTO</option>
+                            <option value="142">AMANDA PASSOS DE ALMEIDA</option>
+                            <option value="143">STHEFANNY MARTINS DOS SANTOS</option>
+                            <option value="144">BRYAN ALVES NOGUEIRA</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="info-group">
+                    <span class="info-label">SÉRIE:</span>
+                    <input type="text" id="student-grade" readonly>
+                </div>
+                <div class="info-group">
+                    <span class="info-label">Nº:</span>
+                    <input type="text" id="student-number" readonly>
+                </div>
+            </div>
+            <div class="activity-title">ATIVIDADE DE CIÊNCIAS (REVISÃO PARA A RECUPERAÇÃO)</div>
+        </div>
+        
+        <div class="questions-container" id="questions-container">
+            <!-- As questões serão inseridas aqui pelo JavaScript -->
+        </div>
+        
+        <div class="submit-container">
+            <button class="submit-btn" id="submit-btn">ENVIAR RESPOSTAS</button>
+        </div>
+    </div>
+    
+    <div class="footer">
+        Sistema Digestório - Revisão para Recuperação | E.E. "PROFª WANDA MASCAGNI DE SÁ"
+    </div>
+
+    <script>
+        // Dados dos alunos
+        const students = {
+            // 8ºA
+            "1": { name: "AMANDA PASSOS DE ALMEIDA", grade: "8ºA", number: "1" },
+            "2": { name: "ANA BEATRIZ RODRIGUES OLIVEIRA", grade: "8ºA", number: "2" },
+            "3": { name: "ANA CLARA SOUSA DA COSTA", grade: "8ºA", number: "3" },
+            "4": { name: "ANA VICTORIA RAGACINI DE OLIVEIRA", grade: "8ºA", number: "4" },
+            "5": { name: "ARTHUR DAVI DE SOUZA FERNANDES", grade: "8ºA", number: "5" },
+            "6": { name: "EDUARDA ALVES DE SOUZA", grade: "8ºA", number: "6" },
+            "7": { name: "EMANUEL ALVES OLIVEIRA", grade: "8ºA", number: "7" },
+            "8": { name: "ESTHER CRISTINE SILVA RIBEIRO", grade: "8ºA", number: "8" },
+            "9": { name: "EVELLYN YASMIN TAVARES SILVA", grade: "8ºA", number: "9" },
+            "10": { name: "FELIPE DE SOUZA RODRIGUES", grade: "8ºA", number: "10" },
+            "11": { name: "FERNANDA POLACHINI MAYER GOMES MARQUES", grade: "8ºA", number: "11" },
+            "12": { name: "GEOVANNA VITORIA ROCHA ABDALA", grade: "8ºA", number: "12" },
+            "15": { name: "GUSTAVO AUGUSTO TOMBOLO REIS", grade: "8ºA", number: "15" },
+            "16": { name: "HENRIQUE ROCHA CARVALHAL", grade: "8ºA", number: "16" },
+            "17": { name: "IGOR MARTINS PEREIRA", grade: "8ºA", number: "17" },
+            "18": { name: "IZABELLY VITORIA DE CARVALHO RODRIGUES SETH", grade: "8ºA", number: "18" },
+            "21": { name: "KAROLAYNE DOS SANTOS BISSORNIA", grade: "8ºA", number: "21" },
+            "22": { name: "KAUANNY APARECIDA MALAQUIAS LIMA", grade: "8ºA", number: "22" },
+            "23": { name: "KÉTHILY NAYARA DA SILVA", grade: "8ºA", number: "23" },
+            "25": { name: "LAVINIA PEREIRA DE SOUZA", grade: "8ºA", number: "25" },
+            "26": { name: "LIVIA PEREIRA DE SOUZA", grade: "8ºA", number: "26" },
+            "27": { name: "LOHRAN ROMUALDO MENDES DA SILVA", grade: "8ºA", number: "27" },
+            "28": { name: "LUIS MIGUEL GONCALVES DA SILVA", grade: "8ºA", number: "28" },
+            "29": { name: "MARCELA ROBERTO DE OLIVEIRA", grade: "8ºA", number: "29" },
+            "31": { name: "MATHEUS TURCHETTO", grade: "8ºA", number: "31" },
+            "32": { name: "OMRAN RASEKH", grade: "8ºA", number: "32" },
+            "33": { name: "PRISCILLA VITORIA MENDES DE OLIVEIRA", grade: "8ºA", number: "33" },
+            "36": { name: "SARAH VITORIA ALVES OLIVEIRA", grade: "8ºA", number: "36" },
+            "37": { name: "YURI GABRIEL DE MORAES PONGOLINO", grade: "8ºA", number: "37" },
+            "38": { name: "ZAYN AL ABIDIN RASULI", grade: "8ºA", number: "38" },
+            "39": { name: "ARTHUR COHEN BARRETO", grade: "8ºA", number: "39" },
+            "40": { name: "ISABELLA DOS SANTOS SALDANHA", grade: "8ºA", number: "40" },
+            "41": { name: "MIGUEL MARTINS DE ASSIS", grade: "8ºA", number: "41" },
+            "42": { name: "ALICE CARVALHO", grade: "8ºA", number: "42" },
+            "43": { name: "AMANDA PASSOS DE ALMEIDA", grade: "8ºA", number: "43" },
+            "44": { name: "ANA JULIA MENEZES DA SILVA", grade: "8ºA", number: "44" },
+            
+            // 8ºB
+            "101": { name: "ALICE CARVALHO", grade: "8ºB", number: "1" },
+            "102": { name: "ANA CLARA GONCALVES TORRES LOYOLA", grade: "8ºB", number: "2" },
+            "103": { name: "ANNA BEATRIZ SANTIAGO DA SILVA", grade: "8ºB", number: "3" },
+            "104": { name: "ARTHUR HORACIO MACEDO", grade: "8ºB", number: "4" },
+            "105": { name: "DAVID HENRIQUE SILVA DOS SANTOS", grade: "8ºB", number: "5" },
+            "106": { name: "ELIAS SILVA DE LIMA", grade: "8ºB", number: "6" },
+            "107": { name: "EVERTON HENRIQUE CARMO RODRIGUES", grade: "8ºB", number: "7" },
+            "108": { name: "FERNANDA MELLYSSA ALVES DE SOUZA", grade: "8ºB", number: "8" },
+            "109": { name: "GABRIELA VITORIA SEVERA LINS", grade: "8ºB", number: "9" },
+            "110": { name: "JENYFFER EMIDIO CALABRIA", grade: "8ºB", number: "10" },
+            "111": { name: "JOÃO VICTOR DA ROCHA TRINDADE", grade: "8ºB", number: "11" },
+            "112": { name: "JULIO CESAR ALVES DOS SANTOS", grade: "8ºB", number: "12" },
+            "113": { name: "LUAN SOUZA MOREIRA LOPES", grade: "8ºB", number: "13" },
+            "114": { name: "LUAN VENITES BALBINO", grade: "8ºB", number: "14" },
+            "115": { name: "LUCAS LUNA NASCIMENTO OLIVEIRA", grade: "8ºB", number: "15" },
+            "116": { name: "LUCAS SANTOS SILVA", grade: "8ºB", number: "16" },
+            "117": { name: "MARIA EDUARDA FELIX DA SILVA", grade: "8ºB", number: "17" },
+            "118": { name: "MONIQUE RIJO COSTA", grade: "8ºB", number: "18" },
+            "119": { name: "MUNIQUE CRISTINA LUCAS", grade: "8ºB", number: "19" },
+            "120": { name: "NICOLAS PENTEADO", grade: "8ºB", number: "20" },
+            "121": { name: "OCTAVIO GONÇALVES OLIVEIRA PEREIRA", grade: "8ºB", number: "21" },
+            "122": { name: "OMRAN RASEKH", grade: "8ºB", number: "22" },
+            "123": { name: "PAULO CELSO DA COSTA JUNIOR", grade: "8ºB", number: "23" },
+            "124": { name: "PEDRO HENRIQUE CARLOS LIMA", grade: "8ºB", number: "24" },
+            "125": { name: "PEDRO HENRIQUE MORAIS AMORIM", grade: "8ºB", number: "25" },
+            "126": { name: "PEDRO HENRIQUE NASCIMENTO DA CONCEICAO", grade: "8ºB", number: "26" },
+            "127": { name: "PIETRO RODRIGUES MIRANDA", grade: "8ºB", number: "27" },
+            "128": { name: "RAPHAELLY APARECIDA MARINHO DE OLIVEIRA", grade: "8ºB", number: "28" },
+            "129": { name: "RENAN LEANDRO RODRIGUES VICENTE", grade: "8ºB", number: "29" },
+            "130": { name: "RENAN OLIVEIRA CAETANO PEREIRA", grade: "8ºB", number: "30" },
+            "131": { name: "RIAN OTAVIANO FLAUSINO", grade: "8ºB", number: "31" },
+            "132": { name: "THAYNA SEABRA DE OLIVEIRA DO NASCIMENTO", grade: "8ºB", number: "32" },
+            "133": { name: "WENDELL RAFAEL DE JESUS LESSA", grade: "8ºB", number: "33" },
+            "134": { name: "WILHAN KENJI ANTONIO", grade: "8ºB", number: "34" },
+            "135": { name: "ZAYN AL ABIDIN RASULI", grade: "8ºB", number: "35" },
+            "136": { name: "VITOR HOLANDA DA SILVA", grade: "8ºB", number: "36" },
+            "137": { name: "D'ALESSANDRO GIANLUCA FERNANDEZ ARCAYA", grade: "8ºB", number: "37" },
+            "138": { name: "ZAINAB MOHAMMADI", grade: "8ºB", number: "38" },
+            "139": { name: "JOANA BEATRIZ VIEIRA DE SOUZA", grade: "8ºB", number: "39" },
+            "140": { name: "JENNYFER VITORIA BASILIO GOMES", grade: "8ºB", number: "40" },
+            "141": { name: "THAYNA SEABRA DE OLIVEIRA DO NASCIMENTO", grade: "8ºB", number: "41" },
+            "142": { name: "AMANDA PASSOS DE ALMEIDA", grade: "8ºB", number: "42" },
+            "143": { name: "STHEFANNY MARTINS DOS SANTOS", grade: "8ºB", number: "43" },
+            "144": { name: "BRYAN ALVES NOGUEIRA", grade: "8ºB", number: "44" }
+        };
+
+        // Questões com respostas corretas e justificativas
+        const questions = [
+            {
+                text: "Observe a imagem da parede do intestino delgado (p. 3). As vilosidades intestinais têm como principal função:",
+                options: [
+                    "Produzir enzimas digestivas.",
+                    "Aumentar a superfície de absorção de nutrientes.",
+                    "Realizar movimentos peristálticos.",
+                    "Secretar bile."
+                ],
+                correct: 1,
+                justification: "As vilosidades ampliam a área de contato para absorção de nutrientes (p. 3)."
+            },
+            {
+                text: "Qual estrutura NÃO faz parte da cavidade oral (p. 5 e 9)?",
+                options: [
+                    "Dentes",
+                    "Esôfago",
+                    "Língua",
+                    "Glândulas salivares"
+                ],
+                correct: 1,
+                justification: "O esôfago é um órgão tubular posterior à faringe (p. 8)."
+            },
+            {
+                text: "As glândulas salivares parótidas localizam-se (p. 6):",
+                options: [
+                    "Abaixo da língua.",
+                    "Nas laterais da mandíbula.",
+                    "Próximas às orelhas.",
+                    "No palato (céu da boca)."
+                ],
+                correct: 2,
+                justification: "São descritas como situadas nas laterais da face, próximas às orelhas (p. 6)."
+            },
+            {
+                text: "A faringe diferencia-se da laringe porque (p. 7):",
+                options: [
+                    "Conduz tanto alimentos quanto ar, enquanto a laringe só atua na respiração.",
+                    "Produz enzimas digestivas.",
+                    "É exclusiva do sistema respiratório.",
+                    "Armazena bile."
+                ],
+                correct: 0,
+                justification: "A faringe é um canal comum aos sistemas digestório e respiratório (p. 7)."
+            },
+            {
+                text: "Os movimentos peristálticos no esôfago têm a função de (p. 8):",
+                options: [
+                    "Triturar alimentos.",
+                    "Empurrar o bolo alimentar para o estômago.",
+                    "Absorver água.",
+                    "Secretar muco."
+                ],
+                correct: 1,
+                justification: "São contrações involuntárias que conduzem o alimento (p. 8)."
+            },
+            {
+                text: "No estômago, o bolo alimentar misturado ao suco gástrico forma o (p. 11):",
+                options: [
+                    "Bile.",
+                    "Quimo.",
+                    "Quilo.",
+                    "Fezes."
+                ],
+                correct: 1,
+                justification: "O quimo é resultado da ação gástrica (p. 11)."
+            },
+            {
+                text: "A porção inicial do intestino delgado é o (p. 12):",
+                options: [
+                    "Jejuno.",
+                    "Íleo.",
+                    "Duodeno.",
+                    "Ceco."
+                ],
+                correct: 2,
+                justification: "O duodeno conecta-se ao estômago (p. 12)."
+            },
+            {
+                text: "Qual órgão é responsável pela formação das fezes (p. 13)?",
+                options: [
+                    "Estômago",
+                    "Intestino delgado",
+                    "Intestino grosso",
+                    "Fígado"
+                ],
+                correct: 2,
+                justification: "O intestino grosso absorve água e forma as fezes (p. 13)."
+            },
+            {
+                text: "O fígado tem como função principal (p. 14):",
+                options: [
+                    "Armazenar bile.",
+                    "Produzir bile para a digestão de gorduras.",
+                    "Secretar suco pancreático.",
+                    "Realizar movimentos peristálticos."
+                ],
+                correct: 1,
+                justification: "O fígado produz bile, que atua na emulsificação de lipídios (p. 14)."
+            },
+            {
+                text: "A vesícula biliar atua no sistema digestório (p. 14):",
+                options: [
+                    "Produzindo enzimas.",
+                    "Armazenando e liberando bile no duodeno.",
+                    "Neutralizando a acidez do quimo.",
+                    "Absorvendo nutrientes."
+                ],
+                correct: 1,
+                justification: "Ela armazena bile produzida pelo fígado (p. 14)."
+            },
+            {
+                text: "O comprimento do tubo digestório humano (cerca de 10 metros) é importante porque (p. 3):",
+                options: [
+                    "Permite maior tempo para digestão e absorção de nutrientes.",
+                    "Facilita a eliminação rápida de fezes.",
+                    "Armazena grandes volumes de alimentos.",
+                    "Produz mais enzimas digestivas."
+                ],
+                correct: 0,
+                justification: "A extensão favorece a digestão e absorção (p. 3)."
+            },
+            {
+                text: "A digestão mecânica diferencia-se da química porque envolve (p. 5):",
+                options: [
+                    "Quebra física dos alimentos (ex: mastigação).",
+                    "Ação de enzimas como a amilase.",
+                    "Absorção de nutrientes.",
+                    "Neutralização de ácidos."
+                ],
+                correct: 0,
+                justification: "A digestão mecânica é física; a química é enzimática (p. 5)."
+            },
+            {
+                text: "A amilase salivar (ptialina) atua na digestão de (p. 6 e 9):",
+                options: [
+                    "Proteínas.",
+                    "Lipídios.",
+                    "Carboidratos.",
+                    "Vitaminas."
+                ],
+                correct: 2,
+                justification: "Inicia a quebra de amido (carboidratos) na boca (p. 6)."
+            },
+            {
+                text: "Durante a deglutição, a epiglote evita engasgos porque (p. 7):",
+                options: [
+                    "Produz saliva.",
+                    "Fecha a entrada da laringe, desviando alimento para o esôfago.",
+                    "Ativa enzimas digestivas.",
+                    "Realiza movimentos peristálticos."
+                ],
+                correct: 1,
+                justification: "Impede que o alimento entre nas vias respiratórias (p. 7)."
+            },
+            {
+                text: "O suco gástrico do estômago contém (p. 10):",
+                options: [
+                    "Bile e sais biliares.",
+                    "Ácido clorídrico e pepsina (para digerir proteínas).",
+                    "Amilase e bicarbonato.",
+                    "Suco entérico."
+                ],
+                correct: 1,
+                justification: "O ácido ativa a pepsina, que quebra proteínas (p. 10)."
+            },
+            {
+                text: "No duodeno, a bile atua principalmente na digestão de (p. 11):",
+                options: [
+                    "Proteínas.",
+                    "Gorduras (lipídios).",
+                    "Carboidratos.",
+                    "Vitaminas."
+                ],
+                correct: 1,
+                justification: "Seus sais biliares emulsificam gorduras (p. 11)."
+            },
+            {
+                text: "As vilosidades e microvilosidades do intestino delgado (p. 12):",
+                options: [
+                    "Produzem suco entérico.",
+                    "Aumentam a superfície para absorção de nutrientes.",
+                    "Realizam digestão mecânica.",
+                    "Secretam muco."
+                ],
+                correct: 1,
+                justification: "Ampliam a área de contato com o quimo (p. 12)."
+            },
+            {
+                text: "O suco pancreático liberado no duodeno tem a função de (p. 11):",
+                options: [
+                    "Neutralizar a acidez do quimo com bicarbonato.",
+                    "Emulsificar gorduras.",
+                    "Iniciar a digestão de proteínas.",
+                    "Absorver água."
+                ],
+                correct: 0,
+                justification: "Contém bicarbonato para reduzir o pH ácido (p. 11)."
+            },
+            {
+                text: "No intestino grosso, ocorre principalmente (p. 13):",
+                options: [
+                    "Digestão de proteínas.",
+                    "Absorção de água e formação das fezes.",
+                    "Produção de bile.",
+                    "Secreção de amilase."
+                ],
+                correct: 1,
+                justification: "Absorve água/sais e forma fezes (p. 13)."
+            },
+            {
+                text: "Qual substância NÃO atua no duodeno (p. 14)?",
+                options: [
+                    "Suco gástrico (produzido no estômago).",
+                    "Suco pancreático.",
+                    "Bile.",
+                    "Suco entérico."
+                ],
+                correct: 0,
+                justification: "O suco gástrico atua apenas no estômago (p. 10 e 14)."
+            }
+        ];
+
+        // Função para carregar as questões
+        function loadQuestions() {
+            const container = document.getElementById('questions-container');
+            
+            questions.forEach((question, index) => {
+                const questionEl = document.createElement('div');
+                questionEl.className = 'question';
+                
+                let optionsHtml = '';
+                question.options.forEach((option, optIndex) => {
+                    optionsHtml += `
+                        <div class="option" data-index="${optIndex}">
+                            <span class="option-letter">${String.fromCharCode(97 + optIndex)}</span>
+                            ${option}
+                        </div>
+                    `;
+                });
+                
+                questionEl.innerHTML = `
+                    <div class="question-text">${question.text}</div>
+                    <div class="options">${optionsHtml}</div>
+                    <button class="show-justification">Mostrar Justificativa</button>
+                    <div class="justification">
+                        <strong>Justificativa:</strong> ${question.justification}
+                    </div>
+                `;
+                
+                container.appendChild(questionEl);
+                
+                // Adicionar evento de clique para as opções
+                const optionElements = questionEl.querySelectorAll('.option');
+                optionElements.forEach(opt => {
+                    opt.addEventListener('click', function() {
+                        // Remover seleção de todas as opções nesta questão
+                        optionElements.forEach(o => o.classList.remove('selected'));
+                        // Selecionar a opção clicada
+                        this.classList.add('selected');
+                        
+                        // Armazenar resposta
+                        const studentId = document.getElementById('student-name').value;
+                        if (studentId) {
+                            const answers = JSON.parse(localStorage.getItem('answers') || '{}');
+                            if (!answers[studentId]) answers[studentId] = {};
+                            answers[studentId][index] = parseInt(this.dataset.index);
+                            localStorage.setItem('answers', JSON.stringify(answers));
+                        }
+                    });
+                });
+                
+                // Adicionar evento para mostrar justificativa
+                const showBtn = questionEl.querySelector('.show-justification');
+                const justification = questionEl.querySelector('.justification');
+                showBtn.addEventListener('click', function() {
+                    justification.style.display = justification.style.display === 'block' ? 'none' : 'block';
+                    showBtn.textContent = justification.style.display === 'block' ? 
+                        'Ocultar Justificativa' : 'Mostrar Justificativa';
+                });
+            });
+        }
+
+        // Função para preencher informações do aluno
+        function setupStudentInfo() {
+            const nameSelect = document.getElementById('student-name');
+            const gradeInput = document.getElementById('student-grade');
+            const numberInput = document.getElementById('student-number');
+            
+            nameSelect.addEventListener('change', function() {
+                const studentId = this.value;
+                if (studentId && students[studentId]) {
+                    gradeInput.value = students[studentId].grade;
+                    numberInput.value = students[studentId].number;
+                } else {
+                    gradeInput.value = '';
+                    numberInput.value = '';
+                }
+            });
+        }
+
+        // Função para enviar respostas
+        function setupSubmitButton() {
+            const submitBtn = document.getElementById('submit-btn');
+            
+            submitBtn.addEventListener('click', function() {
+                const studentId = document.getElementById('student-name').value;
+                
+                if (!studentId) {
+                    alert('Por favor, selecione seu nome antes de enviar.');
+                    return;
+                }
+                
+                // Verificar se todas as questões foram respondidas
+                const answeredQuestions = document.querySelectorAll('.option.selected').length;
+                if (answeredQuestions < questions.length) {
+                    if (!confirm(`Você respondeu apenas ${answeredQuestions} de ${questions.length} questões. Deseja enviar mesmo assim?`)) {
+                        return;
+                    }
+                }
+                
+                alert('Respostas enviadas com sucesso! Obrigado por participar da revisão.');
+                
+                // Aqui você poderia enviar os dados para um servidor em um sistema real
+                // Neste exemplo, os dados já estão armazenados no localStorage
+            });
+        }
+
+        // Inicializar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            loadQuestions();
+            setupStudentInfo();
+            setupSubmitButton();
+        });
+    </script>
+</body>
+</html>
